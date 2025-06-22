@@ -350,32 +350,40 @@ The Use Case Diagram illustrates the primary interactions between the users (Act
 
 ```mermaid
 graph TD
-    actor User
-    actor ML_Engineer
+    User[👤 User] --> A[Submit HTML Text]
+    User --> B[Select Refinement Options]
+    User --> C[View Corrections]
+    User --> D[Accept/Reject Corrections]
+    User --> E[Request Rephrasing]
+    User --> F[Request AI Refinement]
 
-    User --> (Submit HTML Text);
-    User --> (Select Refinement Options);
-    User --> (View Corrections);
-    User --> (Accept/Reject Corrections);
-    User --> (Request Rephrasing);
-    User --> (Request AI Refinement);
+    ML_Engineer[🔧 ML Engineer] --> G[Monitor ML Services]
+    ML_Engineer --> H[Update ML Models]
+    ML_Engineer --> I[Manage Prompt Templates]
+    ML_Engineer --> J[Analyze Model Performance]
 
-    ML_Engineer --> (Monitor ML Services);
-    ML_Engineer --> (Update ML Models);
-    ML_Engineer --> (Manage Prompt Templates);
-    ML_Engineer --> (Analyze Model Performance);
-
-    (Submit HTML Text).> (Parse HTML Input) : include
-    (View Corrections).> (Translate Offsets) : include
-    (Request Rephrasing).> (Generate Rephrasing) : include
-    (Request AI Refinement).> (Generate Refinement) : include
-    (Generate Rephrasing).> (Apply Prompt Engineering) : include
-    (Generate Refinement).> (Apply Prompt Engineering) : include
-    (Generate Rephrasing).> (Perform LLM Inference) : include
-    (Generate Refinement).> (Perform LLM Inference) : include
-    (Generate Rephrasing).> (Calculate Text Diff) : include
-    (Generate Refinement).> (Calculate Text Diff) : include
-    (View Corrections).> (Highlight HTML Changes) : include
+    A --> A1[Parse HTML Input]
+    C --> C1[Translate Offsets]
+    E --> E1[Generate Rephrasing]
+    F --> F1[Generate Refinement]
+    
+    E1 --> K[Apply Prompt Engineering]
+    F1 --> K
+    K --> L[Perform LLM Inference]
+    L --> M[Calculate Text Diff]
+    
+    C --> N[Highlight HTML Changes]
+    
+    style User fill:#e1f5fe
+    style ML_Engineer fill:#f3e5f5
+    style A1 fill:#fff3e0
+    style C1 fill:#fff3e0
+    style E1 fill:#e8f5e8
+    style F1 fill:#e8f5e8
+    style K fill:#fff8e1
+    style L fill:#fff8e1
+    style M fill:#fff8e1
+    style N fill:#fff3e0
 ```
 
 ### Activity Diagram
@@ -384,36 +392,44 @@ The Activity Diagram models the flow of control and actions involved in the core
 
 ```mermaid
 graph TD
-    start --> A{Receive HTML Input};
-    A --> B;
-    B --> C{Determine User Request Type};
+    START[Start] --> A{Receive HTML Input}
+    A --> B[Parse HTML Structure]
+    B --> C{Determine User Request Type}
 
-    C --> |Spelling/Grammar| D;
-    C --> |Sentence Rephrasing| E;
-    C --> |AI Refinement| F;
+    C -->|Spelling/Grammar| D[Extract Text Content]
+    C -->|Sentence Rephrasing| E[Prepare Text for Rephrasing]
+    C -->|AI Refinement| F[Prepare Text for AI Processing]
 
-    D --> G;
-    E --> H;
-    F --> I;
+    D --> G[Send to Grammar Service]
+    E --> H[Send to Rephrasing Service]
+    F --> I[Send to AI Refinement Service]
 
-    G --> J{Get Plain Text Corrections};
-    H --> K;
-    I --> L;
+    G --> J{Get Plain Text Corrections}
+    H --> K[Process Rephrasing Request]
+    I --> L[Process AI Refinement Request]
 
-    K --> M{Get Rephrased Text};
-    L --> N{Get Refined Text};
+    K --> M{Get Rephrased Text}
+    L --> N{Get Refined Text}
 
-    J --> O;
-    M --> P;
-    N --> Q;
+    J --> O[Map Corrections to HTML]
+    M --> P[Map Rephrasings to HTML]
+    N --> Q[Map Refinements to HTML]
 
-    O --> R[Format Corrections Output];
-    P --> R;
-    Q --> R;
+    O --> R[Format Corrections Output]
+    P --> R
+    Q --> R
 
-    R --> S;
-    S --> T{Return Corrected HTML & Corrections JSON};
-    T --> end;
+    R --> S[Merge Results with Original HTML]
+    S --> T{Return Corrected HTML & Corrections JSON}
+    T --> END[End]
+
+    style START fill:#e8f5e8
+    style END fill:#ffebee
+    style C fill:#fff3e0
+    style J fill:#e3f2fd
+    style M fill:#e3f2fd
+    style N fill:#e3f2fd
+    style T fill:#f3e5f5
 ```
 
 ### Sequence Diagram
