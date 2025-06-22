@@ -38,23 +38,23 @@ The system's high-level structure can be visualized as follows:
 
 ```mermaid
 graph TD
-    A[Frontend] --> B(Backend API Gateway);
-    B --> C{Core Django API};
-    C --> D;
-    D --> E;
-    D --> F;
-    D --> G;
-    E --> H;
-    F --> H;
-    G --> H;
-    H --> I[ML Inference Workers (FastAPI)];
-    I --> J;
-    I --> K;
-    C --> K;
-    K --> L;
-    H --> L;
-    I --> L;
-    B --> L;
+    A[Frontend] --> B[Backend API Gateway]
+    B --> C{Core Django API}
+    C --> D[Service Layer]
+    D --> E[User Service]
+    D --> F[Data Service]
+    D --> G[ML Service]
+    E --> H[Message Queue]
+    F --> H
+    G --> H
+    H --> I[ML Inference Workers - FastAPI]
+    I --> J[Model Storage]
+    I --> K[Database]
+    C --> K
+    K --> L[Data Store]
+    H --> L
+    I --> L
+    B --> L
 ```
 
 The adoption of a microservices architecture is critical for an AI application with varying and potentially high computational demands. The user's requirement for a "production-ready" system with "advanced" AI features necessitates this approach. Microservices offer inherent flexibility and scalability, which are crucial for AI applications that often involve complex computations and large datasets.[17] Monolithic applications, in contrast, frequently encounter issues such as circular dependencies, difficulties in testing, and code duplication.[18] By isolating distinct functionalities into separate services, the system gains independent scaling capabilities, allows for tailored technology choices (e.g., using FastAPI for high-performance ML inference), and enhances fault isolation.[17, 19, 20, 21] This design decision directly supports the "production-ready" and "scalable" requirements by enabling individual services to be optimized, deployed, and scaled independently without affecting the entire system.
